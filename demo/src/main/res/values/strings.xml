@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HalfnarpClient</string>
+    <string name="info">Check the logcat console</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
