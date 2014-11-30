@@ -31,9 +31,7 @@ public class MainActivity extends ActionBarActivity {
                     List<TalkPreferencesResponse> talkPreferencesResponses,
                     Response response) {
                 for (TalkPreferencesResponse talkPreferencesResponse : talkPreferencesResponses) {
-                    String title = talkPreferencesResponse.getTitle();
-                    int trackId = talkPreferencesResponse.getTrackId();
-                    Log.d(getClass().getName(), trackId + ": " + title);
+                    Log.d(getClass().getName(), talkPreferencesResponse.toString());
                 }
             }
 
