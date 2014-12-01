@@ -11,6 +11,7 @@ import info.metadude.java.library.halfnarp.TalkPreferencesService;
 import info.metadude.java.library.halfnarp.model.CreateTalkPreferencesSuccessResponse;
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 import info.metadude.java.library.halfnarp.model.TalkIds;
+import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -59,6 +60,33 @@ public class MainActivity extends ActionBarActivity {
                             Response response) {
                         Log.d(getClass().getName(),
                                 createTalkPreferencesResponse.toString());
+                        String uniqueId = createTalkPreferencesResponse.getUid();
+                        updateTalkPreferences(uniqueId);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e(getClass().getName(), "Error = " + error);
+                    }
+                });
+    }
+
+    private void updateTalkPreferences(String uniqueId) {
+        TalkIds talkIds = new TalkIds();
+        talkIds.add(1000);
+        talkIds.add(7000);
+
+        TalkPreferencesService service = ApiModule.getTalkPreferencesService();
+        service.updateTalkPreferences(
+                uniqueId,
+                talkIds,
+                new Callback<UpdateTalkPreferencesSuccessResponse>() {
+                    @Override
+                    public void success(
+                            UpdateTalkPreferencesSuccessResponse updateTalkPreferencesResponse,
+                            Response response) {
+                        Log.d(getClass().getName(),
+                                updateTalkPreferencesResponse.toString());
                     }
 
                     @Override
