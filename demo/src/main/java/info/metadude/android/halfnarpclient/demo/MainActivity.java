@@ -8,7 +8,7 @@ import java.util.List;
 
 import info.metadude.java.library.halfnarp.ApiModule;
 import info.metadude.java.library.halfnarp.TalkPreferencesService;
-import info.metadude.java.library.halfnarp.model.PostSuccessResponse;
+import info.metadude.java.library.halfnarp.model.CreateTalkPreferencesSuccessResponse;
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 import info.metadude.java.library.halfnarp.model.TalkIds;
 import retrofit.Callback;
@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getTalks();
-        sendTalkPreferences();
+        createTalkPreferences();
     }
 
     private void getTalks() {
@@ -44,24 +44,28 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private void sendTalkPreferences() {
+    private void createTalkPreferences() {
         TalkIds talkIds = new TalkIds();
         talkIds.add(5930);
         talkIds.add(5931);
 
         TalkPreferencesService service = ApiModule.getTalkPreferencesService();
-        service.postTalkPreferences(talkIds, new Callback<PostSuccessResponse>() {
+        service.createTalkPreferences(
+                talkIds,
+                new Callback<CreateTalkPreferencesSuccessResponse>() {
+                    @Override
+                    public void success(
+                            CreateTalkPreferencesSuccessResponse createTalkPreferencesResponse,
+                            Response response) {
+                        Log.d(getClass().getName(),
+                                createTalkPreferencesResponse.toString());
+                    }
 
-            @Override
-            public void success(PostSuccessResponse postResponse, Response response) {
-                Log.d(getClass().getName(), postResponse.toString());
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(getClass().getName(), "Error = " + error);
-            }
-        });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.e(getClass().getName(), "Error = " + error);
+                    }
+                });
     }
 
 }
