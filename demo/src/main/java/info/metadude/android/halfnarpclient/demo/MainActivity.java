@@ -9,6 +9,7 @@ import java.util.List;
 import info.metadude.java.library.halfnarp.ApiModule;
 import info.metadude.java.library.halfnarp.TalkPreferencesService;
 import info.metadude.java.library.halfnarp.model.CreateTalkPreferencesSuccessResponse;
+import info.metadude.java.library.halfnarp.model.GetTalkPreferencesSuccessResponse;
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 import info.metadude.java.library.halfnarp.model.TalkIds;
 import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessResponse;
@@ -62,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
                                 createTalkPreferencesResponse.toString());
                         String uniqueId = createTalkPreferencesResponse.getUid();
                         updateTalkPreferences(uniqueId);
+                        getTalkPreferences(uniqueId);
                     }
 
                     @Override
@@ -94,6 +96,23 @@ public class MainActivity extends ActionBarActivity {
                         Log.e(getClass().getName(), "Error = " + error);
                     }
                 });
+    }
+
+    private void getTalkPreferences(String uniqueId) {
+        TalkPreferencesService service = ApiModule.getTalkPreferencesService();
+        service.getTalkPreferences(uniqueId, new Callback<GetTalkPreferencesSuccessResponse>() {
+            @Override
+            public void success(
+                    GetTalkPreferencesSuccessResponse getTalkPreferencesResponse,
+                    Response response) {
+                Log.d(getClass().getName(), getTalkPreferencesResponse.toString());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(getClass().getName(), "Error = " + error);
+            }
+        });
     }
 
 }
