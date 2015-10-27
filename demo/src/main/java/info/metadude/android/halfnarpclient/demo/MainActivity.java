@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.squareup.okhttp.Interceptor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import info.metadude.java.library.halfnarp.ApiModule;
@@ -33,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTalkPreferencesService() {
-        mService = ApiModule.getTalkPreferencesService();
+        List<Interceptor> interceptors = new ArrayList<>(1);
+        if (BuildConfig.DEBUG) {
+            interceptors.add(new LoggingInterceptor());
+        }
+        mService = ApiModule.getTalkPreferencesService(interceptors);
     }
 
     private void getTalks() {
