@@ -13,64 +13,85 @@ import info.metadude.java.library.halfnarp.model.GetTalkPreferencesSuccessRespon
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 import info.metadude.java.library.halfnarp.model.TalkIds;
 import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessResponse;
+import retrofit.Call;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private TalkPreferencesService mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initTalkPreferencesService();
         getTalks();
         createTalkPreferences();
     }
 
+    private void initTalkPreferencesService() {
+        mService = ApiModule.getTalkPreferencesService();
+    }
+
     private void getTalks() {
-        TalkPreferencesService service = ApiModule.getTalkPreferencesService();
-        service.getTalks(new Callback<List<GetTalksResponse>>() {
+        Call<List<GetTalksResponse>> getTalksCall = mService.getTalks();
+        getTalksCall.enqueue(new Callback<List<GetTalksResponse>>() {
             @Override
-            public void success(List<GetTalksResponse> getTalksResponses, Response response) {
-                for (GetTalksResponse getTalkResponse : getTalksResponses) {
-                    Log.d(getClass().getName(), getTalkResponse.toString());
+            public void onResponse(Response<List<GetTalksResponse>> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    onGetTalksSuccess(response.body());
                 }
             }
 
             @Override
-            public void failure(RetrofitError error) {
-                Log.e(getClass().getName(), "Error = " + error);
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+                Log.e(getClass().getName(), "Error = " + t);
             }
         });
     }
 
+    private void onGetTalksSuccess(List<GetTalksResponse> getTalksResponses) {
+        for (GetTalksResponse getTalkResponse : getTalksResponses) {
+            Log.d(getClass().getName(), getTalkResponse.toString());
+        }
+    }
 
     private void createTalkPreferences() {
         TalkIds talkIds = new TalkIds();
         talkIds.add(5930);
         talkIds.add(5931);
 
-        TalkPreferencesService service = ApiModule.getTalkPreferencesService();
-        service.createTalkPreferences(
-                talkIds,
+        Call<CreateTalkPreferencesSuccessResponse> createTalkPreferencesSuccessResponseCall =
+                mService.createTalkPreferences(talkIds);
+        createTalkPreferencesSuccessResponseCall.enqueue(
                 new Callback<CreateTalkPreferencesSuccessResponse>() {
                     @Override
-                    public void success(
-                            CreateTalkPreferencesSuccessResponse createTalkPreferencesResponse,
-                            Response response) {
-                        Log.d(getClass().getName(),
-                                createTalkPreferencesResponse.toString());
-                        String uniqueId = createTalkPreferencesResponse.getUid();
-                        updateTalkPreferences(uniqueId);
-                        getTalkPreferences(uniqueId);
+                    public void onResponse(Response<CreateTalkPreferencesSuccessResponse> response,
+                                           Retrofit retrofit) {
+                        if (response.isSuccess()) {
+                            onCreateTalkPreferencesSuccess(response.body());
+                        }
                     }
 
                     @Override
-                    public void failure(RetrofitError error) {
-                        Log.e(getClass().getName(), "Error = " + error);
+                    public void onFailure(Throwable t) {
+                        t.printStackTrace();
+                        Log.e(getClass().getName(), "Error = " + t);
                     }
                 });
+    }
+
+    private void onCreateTalkPreferencesSuccess(
+            CreateTalkPreferencesSuccessResponse createTalkPreferencesResponse) {
+        Log.d(getClass().getName(),
+                createTalkPreferencesResponse.toString());
+        String uniqueId = createTalkPreferencesResponse.getUid();
+        updateTalkPreferences(uniqueId);
+        getTalkPreferences(uniqueId);
     }
 
     private void updateTalkPreferences(String uniqueId) {
@@ -78,41 +99,55 @@ public class MainActivity extends AppCompatActivity {
         talkIds.add(1000);
         talkIds.add(7000);
 
-        TalkPreferencesService service = ApiModule.getTalkPreferencesService();
-        service.updateTalkPreferences(
-                uniqueId,
-                talkIds,
+        Call<UpdateTalkPreferencesSuccessResponse> updateTalkPreferencesSuccessResponseCall =
+                mService.updateTalkPreferences(uniqueId, talkIds);
+        updateTalkPreferencesSuccessResponseCall.enqueue(
                 new Callback<UpdateTalkPreferencesSuccessResponse>() {
                     @Override
-                    public void success(
-                            UpdateTalkPreferencesSuccessResponse updateTalkPreferencesResponse,
-                            Response response) {
-                        Log.d(getClass().getName(),
-                                updateTalkPreferencesResponse.toString());
+                    public void onResponse(Response<UpdateTalkPreferencesSuccessResponse> response,
+                                           Retrofit retrofit) {
+                        if (response.isSuccess()) {
+                            onUpdateTalkPreferencesSuccess(response.body());
+                        }
                     }
 
                     @Override
-                    public void failure(RetrofitError error) {
-                        Log.e(getClass().getName(), "Error = " + error);
+                    public void onFailure(Throwable t) {
+                        t.printStackTrace();
+                        Log.e(getClass().getName(), "Error = " + t);
                     }
                 });
     }
 
-    private void getTalkPreferences(String uniqueId) {
-        TalkPreferencesService service = ApiModule.getTalkPreferencesService();
-        service.getTalkPreferences(uniqueId, new Callback<GetTalkPreferencesSuccessResponse>() {
-            @Override
-            public void success(
-                    GetTalkPreferencesSuccessResponse getTalkPreferencesResponse,
-                    Response response) {
-                Log.d(getClass().getName(), getTalkPreferencesResponse.toString());
-            }
+    private void onUpdateTalkPreferencesSuccess(
+            UpdateTalkPreferencesSuccessResponse updateTalkPreferencesResponse) {
+        Log.d(getClass().getName(), updateTalkPreferencesResponse.toString());
+    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(getClass().getName(), "Error = " + error);
-            }
-        });
+    private void getTalkPreferences(String uniqueId) {
+        Call<GetTalkPreferencesSuccessResponse> getTalkPreferencesSuccessResponseCall =
+                mService.getTalkPreferences(uniqueId);
+        getTalkPreferencesSuccessResponseCall.enqueue(
+                new Callback<GetTalkPreferencesSuccessResponse>() {
+                    @Override
+                    public void onResponse(Response<GetTalkPreferencesSuccessResponse> response,
+                                           Retrofit retrofit) {
+                        if (response.isSuccess()) {
+                            onGetTalkPreferencesSuccess(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        t.printStackTrace();
+                        Log.e(getClass().getName(), "Error = " + t);
+                    }
+                });
+    }
+
+    private void onGetTalkPreferencesSuccess(
+            GetTalkPreferencesSuccessResponse getTalkPreferencesResponse) {
+        Log.d(getClass().getName(), getTalkPreferencesResponse.toString());
     }
 
 }
