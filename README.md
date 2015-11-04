@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/johnjohndoe/HalfnarpClientDemo.svg)](https://travis-ci.org/johnjohndoe/HalfnarpClientDemo)
+
 # Halfnarp Client Demo
 
 Android project to demonstrate the usage of the [Halfnarp client library][halfnarp-client]
