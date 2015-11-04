@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/johnjohndoe/HalfnarpClientDemo.svg)](https://travis-ci.org/johnjohndoe/HalfnarpClientDemo)
+[![Build Status](https://travis-ci.org/johnjohndoe/HalfnarpClientDemo.svg)](https://travis-ci.org/johnjohndoe/HalfnarpClientDemo) [![Apache License](http://img.shields.io/badge/license-Apache%20License%202.0-lightgrey.svg)](http://choosealicense.com/licenses/apache-2.0/)
 
 # Halfnarp Client Demo
 
