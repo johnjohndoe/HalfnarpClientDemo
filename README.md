@@ -7,7 +7,7 @@ Android project to demonstrate the usage of the [Halfnarp client library][halfna
 
 ## Usage
 
-There is a **demo application module** to checkout a working a example.
+There is a **demo application module** to checkout a working example.
 
 
 ### Gradle build
