@@ -4,10 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import info.metadude.java.library.halfnarp.ApiModule;
@@ -17,10 +13,11 @@ import info.metadude.java.library.halfnarp.model.GetTalkPreferencesSuccessRespon
 import info.metadude.java.library.halfnarp.model.GetTalksResponse;
 import info.metadude.java.library.halfnarp.model.TalkIds;
 import info.metadude.java.library.halfnarp.model.UpdateTalkPreferencesSuccessResponse;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,27 +34,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTalkPreferencesService() {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        List<Interceptor> interceptors = new ArrayList<>(1);
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
-            interceptors.add(httpLoggingInterceptor);
+            HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            builder.addNetworkInterceptor(httpLoggingInterceptor);
         }
-        mService = ApiModule.getTalkPreferencesService(interceptors);
+        OkHttpClient okHttpClient = builder.build();
+        mService = ApiModule.getTalkPreferencesService(okHttpClient);
     }
 
     private void getTalks() {
         Call<List<GetTalksResponse>> getTalksCall = mService.getTalks();
         getTalksCall.enqueue(new Callback<List<GetTalksResponse>>() {
             @Override
-            public void onResponse(Response<List<GetTalksResponse>> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
+            public void onResponse(Call<List<GetTalksResponse>> call,
+                                   Response<List<GetTalksResponse>> response) {
+                if (response.isSuccessful()) {
                     onGetTalksSuccess(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<List<GetTalksResponse>> call, Throwable t) {
                 t.printStackTrace();
                 Log.e(getClass().getName(), "Error = " + t);
             }
@@ -80,15 +79,16 @@ public class MainActivity extends AppCompatActivity {
         createTalkPreferencesSuccessResponseCall.enqueue(
                 new Callback<CreateTalkPreferencesSuccessResponse>() {
                     @Override
-                    public void onResponse(Response<CreateTalkPreferencesSuccessResponse> response,
-                                           Retrofit retrofit) {
-                        if (response.isSuccess()) {
+                    public void onResponse(Call<CreateTalkPreferencesSuccessResponse> call,
+                                           Response<CreateTalkPreferencesSuccessResponse> response) {
+                        if (response.isSuccessful()) {
                             onCreateTalkPreferencesSuccess(response.body());
                         }
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<CreateTalkPreferencesSuccessResponse> call,
+                                          Throwable t) {
                         t.printStackTrace();
                         Log.e(getClass().getName(), "Error = " + t);
                     }
@@ -114,15 +114,16 @@ public class MainActivity extends AppCompatActivity {
         updateTalkPreferencesSuccessResponseCall.enqueue(
                 new Callback<UpdateTalkPreferencesSuccessResponse>() {
                     @Override
-                    public void onResponse(Response<UpdateTalkPreferencesSuccessResponse> response,
-                                           Retrofit retrofit) {
-                        if (response.isSuccess()) {
+                    public void onResponse(Call<UpdateTalkPreferencesSuccessResponse> call,
+                                           Response<UpdateTalkPreferencesSuccessResponse> response) {
+                        if (response.isSuccessful()) {
                             onUpdateTalkPreferencesSuccess(response.body());
                         }
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<UpdateTalkPreferencesSuccessResponse> call,
+                                          Throwable t) {
                         t.printStackTrace();
                         Log.e(getClass().getName(), "Error = " + t);
                     }
@@ -140,15 +141,15 @@ public class MainActivity extends AppCompatActivity {
         getTalkPreferencesSuccessResponseCall.enqueue(
                 new Callback<GetTalkPreferencesSuccessResponse>() {
                     @Override
-                    public void onResponse(Response<GetTalkPreferencesSuccessResponse> response,
-                                           Retrofit retrofit) {
-                        if (response.isSuccess()) {
+                    public void onResponse(Call<GetTalkPreferencesSuccessResponse> call,
+                                           Response<GetTalkPreferencesSuccessResponse> response) {
+                        if (response.isSuccessful()) {
                             onGetTalkPreferencesSuccess(response.body());
                         }
                     }
 
                     @Override
-                    public void onFailure(Throwable t) {
+                    public void onFailure(Call<GetTalkPreferencesSuccessResponse> call, Throwable t) {
                         t.printStackTrace();
                         Log.e(getClass().getName(), "Error = " + t);
                     }
