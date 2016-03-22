@@ -11,7 +11,7 @@ android:
     - tools
     - platform-tools
     - build-tools-23.0.2
-    - android-22
+    - android-23
 
     # The libraries we can't get from Maven Central or similar
     - extra
