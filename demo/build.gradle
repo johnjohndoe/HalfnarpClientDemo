@@ -33,7 +33,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:23.2.1"
-    compile "com.github.johnjohndoe:HalfnarpClient:5d2438c1c61ee6990774f13df6f66d57e2be68e0"
-    compile "com.squareup.okhttp3:okhttp:3.2.0"
-    compile "com.squareup.okhttp3:logging-interceptor:3.2.0"
+    compile "com.github.johnjohndoe:HalfnarpClient:616aa2836b7a7cc086ff7b07a304fc8d650cdc8e"
+    compile "com.squareup.okhttp3:okhttp:3.4.2"
+    compile "com.squareup.okhttp3:logging-interceptor:3.4.2"
 }
