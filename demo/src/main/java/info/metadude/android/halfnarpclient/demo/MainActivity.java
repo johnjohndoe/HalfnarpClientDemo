@@ -22,6 +22,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final static String BASE_URL = "http://halfnarp.sha2017.org";
+
     private TalkPreferencesService mService;
 
     @Override
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             builder.addNetworkInterceptor(httpLoggingInterceptor);
         }
         OkHttpClient okHttpClient = builder.build();
-        mService = ApiModule.getTalkPreferencesService(okHttpClient);
+        mService = ApiModule.getTalkPreferencesService(BASE_URL, okHttpClient);
     }
 
     private void getTalks() {
