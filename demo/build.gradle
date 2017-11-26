@@ -35,7 +35,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:25.3.1"
     compile "com.github.johnjohndoe:HalfnarpClient:f2c5859fb3e5b3fb5584c1a7d8d463a73e571feb"
     compile "com.squareup.okhttp3:okhttp:3.7.0"
