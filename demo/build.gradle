@@ -32,7 +32,7 @@ android {
 
 dependencies {
     implementation "com.android.support:appcompat-v7:25.3.1"
-    implementation "com.github.johnjohndoe:HalfnarpClient:f2c5859fb3e5b3fb5584c1a7d8d463a73e571feb"
-    implementation "com.squareup.okhttp3:okhttp:3.7.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.7.0"
+    implementation "com.github.johnjohndoe:HalfnarpClient:cb79f4f1769c33590e4edafd91b31a914c1236bb"
+    implementation "com.squareup.okhttp3:okhttp:3.9.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.9.1"
 }
