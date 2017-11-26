@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String BASE_URL = "http://halfnarp.sha2017.org";
+    private final static String BASE_URL = "https://halfnarp.events.ccc.de";
 
     private TalkPreferencesService mService;
 
