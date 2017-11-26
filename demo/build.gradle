@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "info.metadude.android.halfnarpclient.demo"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 25
         versionCode 4
         versionName "3.0.0"
